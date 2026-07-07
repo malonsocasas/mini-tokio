@@ -9,7 +9,7 @@ pub struct Executor {
 
 impl Executor {
 
-    pub fn execute<T: Future<Output = ()> + Send + Sync + 'static>(&self, f: T) {
+    pub fn execute<T: Future<Output = ()> + Send + 'static>(&self, f: T) {
         let task = Box::pin(f);
         self.scheduler.poll(task);
     }

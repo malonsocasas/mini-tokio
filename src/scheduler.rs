@@ -85,7 +85,7 @@ impl Scheduler {
         self.workers.get(self.round_robin_idx.load(std::sync::atomic::Ordering::Relaxed) % self.workers.len()).unwrap()
     }
     
-    pub fn poll(&self, f: Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>>) {
+    pub fn poll(&self, f: Pin<Box<dyn Future<Output = ()> + Send + 'static>>) {
         self.future_tx.send(Arc::new(Mutex::new(f))).unwrap();
     }
 
