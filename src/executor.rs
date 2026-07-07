@@ -1,4 +1,4 @@
-use std::{future::Future, sync::Arc, thread};
+use std::{future::Future, sync::Arc};
 
 use crate::{reactor::Reactor, scheduler::Scheduler};
 
@@ -16,13 +16,7 @@ impl Executor {
 
     pub fn run(nb_workers: usize) -> Self {
         let scheduler = Scheduler::run(nb_workers);
-        let reactor = Arc::new(Reactor::new());
-
-        let reactor_clone = Arc::clone(&reactor);
-        thread::Builder::new()
-            .name("Reactor thread".to_string())
-            .spawn(move || { reactor_clone.run() })
-            .unwrap();
+        let reactor = Reactor::run();
 
         Self { reactor, scheduler }
     }
