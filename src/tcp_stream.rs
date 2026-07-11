@@ -3,7 +3,6 @@ use std::{future::Future, io::{self, Read}, net::TcpStream, os::fd::AsRawFd, pin
 use crate::reactor::Reactor;
 
 
-
 pub struct AsyncTcpStream {
     stream: TcpStream,
     reactor: Arc<Reactor>,
@@ -45,7 +44,6 @@ impl Future for TcpRead<'_> {
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let future = self.get_mut();     
-        // let mut buf = [0; 128];
 
         match future.stream.stream.read(future.buf) {
             Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
